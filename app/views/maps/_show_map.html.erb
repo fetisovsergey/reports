@@ -1,0 +1,61 @@
+<br>
+<a href="#modal_map_of_micropost<%= micropost.id%>" data-toggle="modal" style="text-decoration:none;font-weight:300;font-size:0.7em">
+	<% if !micropost.address.blank? %>
+		<%= micropost.address %>
+	<% else %>
+	Координаты:
+		<%= micropost.latitude.round(5) %>
+		<%= micropost.longtitude.round(5) %>
+	<% end %>
+</a>
+	
+
+<div class="modal hide fade modal_of_map" id="modal_map_of_micropost<%= micropost.id%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<%= image_tag("map.png", size: "30x30",style:"position:absolute;left:8px") %> 
+        <h3 class="modal-title" id="myModalLabel">Карта</h3>
+      </div>
+      <div class="modal-body">
+  	  	<section id="map_section<%= micropost.id%>" class="map_section">
+  		  	<script>
+			  $("#modal_map_of_micropost<%= micropost.id%>").on("shown.bs.modal", function () {
+    		  	L.mapbox.accessToken = 'pk.eyJ1IjoiZmV0aXNvdnNlcmdleSIsImEiOiI0X09HSjZFIn0.aU0mwcW1UZIj5ZWVBFkRdQ';
+    		    var map = L.mapbox.map('map_of_micropost<%= micropost.id%>', 'mapbox.streets').setView([<%= micropost.latitude %>,
+				<%= micropost.longtitude %>], 10);
+				map.addControl(L.mapbox.geocoderControl('mapbox.places',{autocomplete: true}));
+			    L.control.layers({
+			    'Схема': L.mapbox.tileLayer('mapbox.streets').addTo(map),
+			    'Спутник': L.mapbox.tileLayer('mapbox.satellite')
+			    }).addTo(map);
+			    var marker = L.marker([<%= micropost.latitude %>,<%= micropost.longtitude %>],
+			    {
+					icon: L.mapbox.marker.icon({'marker-color': '#CC0033','marker-symbol':'pitch','marker-size': 'large'})
+			    }).addTo(map);
+			  });
+  		  	</script>
+  	    	<div id='map_of_micropost<%= micropost.id%>' class="map"></div>
+  	  	</section>
+      </div>
+      <div class="modal-footer">
+		  <div class="message">
+		    <div class="user">
+		      <%= link_to image_tag(micropost.user.avatar.url(:thumb), class: "img-rounded",style:"margin-bottom: 1px"),micropost.user %>
+		      <br>
+			    <%= render 'shared/user_name', :user => micropost.user %>
+		    </div>
+		    <div class="content">
+		      <% if !micropost.content.blank? %>
+		        <h3><%= micropost.content %></h3>
+		      <% end %>
+			  <h1>Posted <%= time_ago_in_words(micropost.created_at) %> ago.</h1>
+		    </div>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>

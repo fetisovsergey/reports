@@ -1,0 +1,42 @@
+<% provide(:title, 'About') %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <script language="javascript" type="text/javascript">
+    function startTime()
+    {
+    var tm=new Date();
+    var month=new Array("января","февраля","марта","апреля","мая","июня",
+    "июля","августа","сентября","октября","ноября","декабря");
+    var h=tm.getHours();
+    var m=tm.getMinutes();
+    var s=tm.getSeconds();
+    m=checkTime(m);
+    s=checkTime(s);
+    document.getElementById('txt').innerHTML=tm.getDate()+" "+month[tm.getMonth()]+" "+tm.getFullYear()+" "+"г."+" "+" "+h+":"+m+":"+s;
+    t=setTimeout('startTime()',500);
+    }
+    function checkTime(i)
+    {
+    if (i<10)
+    {
+    i="0" + i;
+    }
+    return i;
+    }
+    </script> 
+    <title><%= yield(:title) %></title>
+  </head>
+  <body onload="startTime()">
+
+    <div style="position:relative;width:50%;margin:0 auto">
+      <%= image_tag("mac2.png", style:"width:100%;position:relative;z-index:2") %>
+      <div id="monitor">
+        <%= image_tag("reports.png", style:"width:60%", alt: "Reports") %><br>
+        Social Network<br>
+        Contact: info@reportsclub.ru
+        <p id="txt"></p>
+      </div>
+    </div>
+  </body>
+</html>

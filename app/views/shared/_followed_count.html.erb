@@ -1,0 +1,12 @@
+<section>
+	<a href="<%= following_user_path(@user) %>" style="text-decoration: none;">
+	 <h5>
+		 <%= image_tag("following.png", size: "90x30") %>&nbsp
+		 <span class="btn btn-inverse" id="badge">
+		 <div id="followed_count_user<%= @user.id %>">	 
+		 	<%= @user.followed_users.count %>
+		 </div>
+		 </span>
+	</h5>
+	</a>
+</section>

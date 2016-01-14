@@ -1,0 +1,18 @@
+<% provide(:title, "Зарегестрируйся") %>
+<h1><%= image_tag("reports.png", size: "240x140", alt: "Reports") %></h1>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(:session, url: sessions_path) do |f| %>
+
+      <%= f.label :email, "Адрес электронной почты",style:"color:#FFFFFF;font-weight:300" %>
+      <%= f.text_field :email, placeholder: "Адрес электронной почты" %>
+
+      <%= f.label :Пароль,style:"color:#FFFFFF;font-weight:300" %>
+      <%= f.password_field :password, placeholder: "Пароль" %>
+
+      <%= f.submit "Войти", class: "btn btn-primary" %>
+    <% end %>
+    <p style="color:#FFFFFF;font-weight:300">Новый пользователь? <%= link_to "Зарегистрируйся!", signup_path %></p>
+  </div>
+</div>

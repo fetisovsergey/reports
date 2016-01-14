@@ -1,0 +1,155 @@
+<% if !user.locations.first.nil? and current_user.id!=user.id and !current_user.locations.first.nil? %>
+
+
+<li class="location">
+	<a href="#modal_distance_between_<%= user.id%>_<%= current_user.id%>" data-toggle="modal" style="text-decoration:none">
+		<h3><%= image_tag("distance.png",size:"25x25") %>
+		<div id='distance_between_<%= user.id%>_<%= current_user.id%>' style="left:30px;top:5px;position:absolute"/></h3>
+      	<% if !user.locations.first.address.blank? %>
+			    <%= user.locations.first.address %>
+      	<% else %>
+        	<%= user.locations.first.latitude.round(5) %>
+        	<%= user.locations.first.longtitude.round(5) %>
+      	<% end %>
+	</a>
+</li>
+
+<div class="modal hide fade modal_of_map" id="modal_distance_between_<%= user.id%>_<%= current_user.id%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <%= image_tag("map.png", size: "30x30",style:"position:absolute;left:8px") %> 
+        <h3 class="modal-title" id="myModalLabel" style="font-size:1.2em">Расстояние до <%= user.name %></h3>
+      </div>
+      <div class="modal-body">
+        <section class="map_section">
+            <script>
+                var UserMarker = L.marker(new L.LatLng(<%= user.locations.first.latitude %>,<%= user.locations.first.longtitude %>));
+                var user = UserMarker.getLatLng();
+
+                var CurrentUserMarker = L.marker(new L.LatLng(<%= current_user.locations.first.latitude %>,
+                <%= current_user.locations.first.longtitude %>));
+                var current_user = CurrentUserMarker.getLatLng();
+
+                var container = document.getElementById('distance_between_<%= user.id%>_<%= current_user.id%>');
+                var distance_users=(user.distanceTo(current_user)).toFixed(0)
+
+                var scale = 4;
+                if (distance_users < 500000)
+                {
+                    scale = 10;
+                }
+                if (distance_users > 500000 && distance_users < 1000000)
+                {
+                    scale = 7;
+                }
+                if (distance_users > 1000)
+                {
+                    distance_users=(distance_users/1000).toFixed(0)
+                    container.innerHTML = distance_users + ' км';
+                }
+                else
+                {
+		                scale = 13;
+                    container.innerHTML = distance_users + ' м';
+                }
+
+              $("#modal_distance_between_<%= user.id%>_<%= current_user.id%>").on("shown.bs.modal", function () {
+                L.mapbox.accessToken = 'pk.eyJ1IjoiZmV0aXNvdnNlcmdleSIsImEiOiI0X09HSjZFIn0.aU0mwcW1UZIj5ZWVBFkRdQ';
+				
+                var distance_map = L.mapbox.map('map_distance_between_<%= user.id%>_<%= current_user.id %>', 'mapbox.streets').setView(
+                [<%= user.locations.first.latitude %>,<%= user.locations.first.longtitude %>], scale);
+                distance_map.addControl(L.mapbox.geocoderControl('mapbox.places',{autocomplete: true}));
+                L.control.layers({
+                'Схема': L.mapbox.tileLayer('mapbox.streets').addTo(distance_map),
+                'Спутник': L.mapbox.tileLayer('mapbox.satellite')
+                }).addTo(distance_map);
+          
+		      	  	var current_user_icon_url = "<%= current_user.avatar.url(:medium) %>"
+        				if (current_user_icon_url == "default_avatar_medium.png")
+        				{
+        					current_user_icon_url = '/' + current_user_icon_url
+        				}
+        				
+        		  	var user_icon_url = "<%= user.avatar.url(:medium) %>"
+        				if (user_icon_url == "default_avatar_medium.png")
+        				{
+        					user_icon_url = '/' + user_icon_url
+        				}
+				
+                var myLayer = L.mapbox.featureLayer().addTo(distance_map);
+                var geoJson = [
+                    {
+                        type: 'Feature',
+                        "geometry": { "type": "Point", "coordinates": [<%= current_user.locations.first.longtitude %>,
+                        <%= current_user.locations.first.latitude %>]},
+                        "properties":
+                        {
+                          "icon": {
+                          "iconUrl": current_user_icon_url,
+                          "iconSize": [55, 55], // size of the icon
+                          "iconAnchor": [25, 25], // point of the icon which will correspond to marker's location
+                          "popupAnchor": [0, -25], // point from which the popup should open relative to the iconAnchor
+                          "className": "map-icon-current"
+                        }
+                    }},
+                    {
+                        type: 'Feature',
+                        "geometry": { "type": "Point", "coordinates": [<%= user.locations.first.longtitude %>,
+                        <%= user.locations.first.latitude %>]},
+                        "properties":
+                        {
+                          "icon": {
+                          "iconUrl": user_icon_url,
+                          "iconSize": [55, 55], // size of the icon
+                          "iconAnchor": [25, 25], // point of the icon which will correspond to marker's location
+                          "popupAnchor": [0, -25], // point from which the popup should open relative to the iconAnchor
+                          "className": "map-icon"
+                          }
+                    }},
+                    {
+                      "type": "Feature",
+                      "geometry": {
+                        "type": "LineString",
+                        "coordinates": [
+                          [<%= user.locations.first.longtitude %>,<%= user.locations.first.latitude %>],
+                          [<%= current_user.locations.first.longtitude %>,<%= current_user.locations.first.latitude %>]
+                        ]
+                      },
+                      "properties": {
+                        "stroke": "#000",
+                        "stroke-opacity": 0.5,
+                        "stroke-width": 3
+                      }
+                    }
+                ];
+                myLayer.on('layeradd', function(e) {
+                  var marker = e.layer,
+                  feature = marker.feature;
+                  marker.setIcon(L.icon(feature.properties.icon));
+                });
+                // Add features to the map
+                myLayer.setGeoJSON(geoJson);
+            });
+            </script>
+            <div id='map_distance_between_<%= user.id%>_<%= current_user.id %>' class="map"></div>
+        </section>
+      </div>
+      <div class="modal-footer" style="font-size:1.0em">
+      	<% if !user.locations.first.address.blank? %>
+			<%= user.locations.first.address %>
+      	<% else %>
+		Координаты <%= user.name %>:
+        	<%= user.locations.first.latitude.round(5) %>
+        	<%= user.locations.first.longtitude.round(5) %>
+      	<% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<% end %>

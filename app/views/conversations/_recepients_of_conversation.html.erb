@@ -1,0 +1,26 @@
+<div id="button_recepients">
+	<a href="#recepients<%= conversation.id %>" data-toggle="modal">
+		<div class="btn btn-link" style="text-decoration:none;font-weight:300">Участники беседы</div>
+	</a>			
+</div>
+
+
+<div class="modal hide fade modal_of_likers" id="recepients<%= conversation.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+        <h3 class="modal-title" id="myModalLabel" style="text-align:center;font-size:1.3em;">Участники беседы</h3>
+      </div>
+      <div class="modal-body" style="padding:5px">
+		<ul style="margin:5px;display:inline;font-size:1.3em;list-style-type:none;">
+			<% conversation.recipients.each do |user| %>
+				<%= render 'microposts/liker', :user => user %>
+			<% end %>
+		</ul>
+      </div>
+    </div>
+  </div>
+</div>

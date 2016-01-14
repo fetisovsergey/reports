@@ -1,0 +1,37 @@
+<%= content_tag_for(:li, conversation,style:"list-style-type:none;") do |conversation| %>
+	<% if !conversation.is_completely_trashed?(current_user) %>
+		<% if conversation.is_unread?(current_user) %>
+ 			<section style="background-color: #FFDB4D;border-radius:5px">
+        	<%= render 'conversations/conversation_content', :conversation => conversation %>
+			</section>
+		<% else %>	
+ 			<section>
+      	  <%= render 'conversations/conversation_content', :conversation => conversation %>
+ 			</section>
+		<% end %>
+	<% end %>
+<% end %>
+
+
+
+
+
+<div class="modal hide fade modal_of_conversation" id="delete_conversation<%= conversation.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+        <h3 class="modal-title" id="myModalLabel">Удалить переписку</h3>
+      </div>
+      <div class="modal-body">
+        Вы хотите удалить всю переписку с данным пользователем?
+      </div>
+      <div class="modal-footer">
+        <%= link_to 'Да', trash_conversation_path(conversation), method: :post,class: "btn btn-primary" %>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Нет</button>
+      </div>
+    </div>
+  </div>
+</div>

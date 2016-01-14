@@ -1,0 +1,26 @@
+<% provide(:title, @user.name) %>
+<div class="row">  
+  <aside>
+    <%= render 'shared/user_info' %>
+  </aside>
+  <div id="micropostbar">
+    <% if @user == current_user %>
+      <div id="micropost_form">
+        <%= render 'shared/micropost_form' %>
+      </div>
+      <div id="feed">
+        <%= render 'shared/feed' %>
+      </div>
+    <% else %>
+      <% if @user.microposts.any? %>
+        <ol class="microposts" style="margin-top:0px;border-radius:5px;">
+          <%= render @microposts %>
+        </ol>
+    		<div style="font-size:1.1em;text-align:center;font-weight:300;margin:-10px">
+    		  <%= will_paginate @microposts, :previous_label => "&#9668; Назад",:next_label => "Вперед &#9658;",:inner_window => 1, :outer_window => 0 %>
+    		</div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+

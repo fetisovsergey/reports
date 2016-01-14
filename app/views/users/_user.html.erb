@@ -1,0 +1,36 @@
+<li>
+  <div style="position:absolute">
+    <%= link_to image_tag(user.avatar.url(:list_avatar),class:"img-rounded"), user %>
+  </div> 
+   
+  <ul>
+    <li class="user">
+      <%= link_to(user.name, user,style:"text-decoration: none;font-size: 1.1em;") %><br>
+      <% if !user.realname.blank? %>
+  	     <%= user.realname %>
+      <% end %>
+      <% if !user.surname.blank? %>
+  	     <%= user.surname %>
+      <% end %><br>
+      <% if user != current_user %>
+            <%= render 'conversations/write_user', :user => user,:text => "Написать" %>
+      <% else %>
+	  		<br>
+	  <% end%>
+    </li>
+    <%= render 'maps/location_of_user', :user => user %>
+  </ul>
+  
+  <div style="position: absolute;top:10px;right:10px">
+  <h1 style="font-size: 0.9em;margin-bottom:0">
+    <% if user != current_user %>
+          <%= render 'users/follow_form',:@user => user,:current_user => current_user %>
+    <% end %>
+    <% if current_user.admin? && !current_user?(user) %>
+       <%= link_to "delete", user, style:"letter-spacing:normal",method: :delete,
+                                    data: { confirm: "You sure?" } %>
+    <% end %>
+  </h1>
+  </div>
+  
+</li>

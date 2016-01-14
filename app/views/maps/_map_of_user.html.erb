@@ -1,0 +1,128 @@
+<script>
+$(document).ready(function(){
+    <% if !current_user.locations.first.nil? and (!current_user.locations.first.address.nil? or !current_user.locations.first.latitude.nil?) %>
+      var CurrentUserMarker = L.marker(new L.LatLng(<%= current_user.locations.first.latitude %>,
+      <%= current_user.locations.first.longtitude %>));
+      var current_user_icon_url = "<%= current_user.avatar.url(:medium) %>"
+      if (current_user_icon_url == "default_avatar_medium.png")
+      {
+        current_user_icon_url = '/' + current_user_icon_url
+      }
+    <% end %>
+
+    L.mapbox.accessToken = 'pk.eyJ1IjoiZmV0aXNvdnNlcmdleSIsImEiOiI0X09HSjZFIn0.aU0mwcW1UZIj5ZWVBFkRdQ';
+
+  	var following_map = L.mapbox.map('map_<%= current_user.id %>', 'mapbox.streets').setView([61,61], 3);
+    
+    following_map.addControl(L.mapbox.geocoderControl('mapbox.places',{autocomplete: true}));
+    
+    L.control.layers({
+      'Схема': L.mapbox.tileLayer('mapbox.streets').addTo(following_map),
+      'Спутник': L.mapbox.tileLayer('mapbox.satellite')
+    }).addTo(following_map);
+            
+
+    //USERS
+    <% @users.each do |user| %>
+      <% if !user.locations.first.nil? and (!user.locations.first.address.nil? or !user.locations.first.latitude.nil?) %>
+        var UserMarker<%= user.id %> = L.marker(new L.LatLng(<%= user.locations.first.latitude %>,<%= user.locations.first.longtitude %>));
+  		  var user<%= user.id %>_icon_url = "<%= user.avatar.url(:medium) %>"
+  		  if (user<%= user.id %>_icon_url == "default_avatar_medium.png")
+  		  {
+  			 user<%= user.id %>_icon_url = '/' + user<%= user.id %>_icon_url
+  		  }
+      <% end %>
+    <% end %>
+    //
+				
+    var myLayer = L.mapbox.featureLayer().addTo(following_map);
+    var geoJson = [
+
+      <% if !current_user.locations.first.nil? and (!current_user.locations.first.address.nil? or !current_user.locations.first.latitude.nil?) %>
+      {
+        type: 'Feature',
+        "geometry": { "type": "Point", "coordinates": [<%= current_user.locations.first.longtitude %>,
+        <%= current_user.locations.first.latitude %>]},
+        "properties":
+        {
+          "icon": {
+          "iconUrl": current_user_icon_url,
+          "iconSize": [45, 45], // size of the icon
+          "iconAnchor": [25, 25], // point of the icon which will correspond to marker's location
+          "popupAnchor": [0, -25], // point from which the popup should open relative to the iconAnchor
+          "className": "map-icon-current"
+        }
+      }},
+      <% end %>
+
+      <% @users.each do |user| %>
+        <% if !user.locations.first.nil? and (!user.locations.first.address.nil? or !user.locations.first.latitude.nil?) %>
+        {
+          type: 'Feature',
+          "geometry": { "type": "Point", "coordinates": [<%= user.locations.first.longtitude %>,
+          <%= user.locations.first.latitude %>]},
+          "properties":
+          {
+            "icon": {
+            "iconUrl": user<%= user.id %>_icon_url,
+            "iconSize": [45, 45], // size of the icon
+            "iconAnchor": [25, 25], // point of the icon which will correspond to marker's location
+            "popupAnchor": [0, -25], // point from which the popup should open relative to the iconAnchor
+            "className": "map-icon"
+          }
+        }},
+        <% end %>
+      <% end %>
+
+      ];
+    myLayer.on('layeradd', function(e)
+    {
+      var marker = e.layer,
+      feature = marker.feature;
+      marker.setIcon(L.icon(feature.properties.icon));
+    });
+    // Add features to the map
+    myLayer.setGeoJSON(geoJson);
+  });
+
+</script>
+<div style="position:relative">
+  <section id="map_of_user">
+    <div id='map_<%= current_user.id %>' class="map"></div>
+  </section>
+  <div id="places_of_user">
+
+    <div id="title">
+      Following
+    </div>
+
+    <section id="places">
+    <% @locations.each do |location| %>
+    <% user = User.find(location.user_id) %>
+      <% if !user.locations.first.nil? and (!user.locations.first.address.nil? or !user.locations.first.latitude.nil?) %>
+        <div class="user_place">
+          <div class="place_avatar_user">
+            <%= link_to image_tag(user.avatar.url(:thumb),class:"img-rounded"), user %>
+          </div>
+          <div class="place_userplace">
+            <%= link_to(user.name, user,style:"text-decoration: none;font-size:1.1em;font-weight:400") %><br>
+            <font style="font-weight:700;">
+              <% if !user.locations.first.address.blank? %>
+                <%= user.locations.first.address %>
+              <% else %>
+                Координаты: 
+                <%= user.locations.first.latitude.round(5) %>
+                <%= user.locations.first.longtitude.round(5) %>
+              <% end %>
+            </font>
+            <br>
+            <%= time_ago_in_words(user.locations.first.created_at) %> ago
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </section>
+
+  </div>
+</div>
+

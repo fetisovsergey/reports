@@ -1,0 +1,7 @@
+<!--_Пометить_переписку_как_просмотренную_-->
+<% conversation.mark_as_read(current_user) %>
+<!--++++++++++++++++++++++++++++++++++++++-->
+<%= content_tag_for(:li, conversation.receipts_for(current_user).last(60),style:"list-style-type:none") do |receipt| %>
+  <% message = receipt.message %>
+  <%= render 'conversations/message', message: message %>
+<% end %>

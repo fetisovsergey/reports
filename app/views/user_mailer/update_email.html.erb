@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h1>Вы изменили данные вашей учетной записи на ReportsClub.ru</h1>
+    <p>
+      <% if !@user.name.blank? %>
+      	Имя пользователя: <%= @user.name %><br/>
+      <% end %>
+      <% if !@user.password.blank? %>
+        Пароль: <%= @user.password %>
+      <% end %>
+    </p>
+    <p>
+    <p>Спасибо за пользование данным сервисом!)</p>
+  </body>
+</html>

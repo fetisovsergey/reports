@@ -1,0 +1,10 @@
+<section>
+   	<a href="<%= conversations_path %>" style="text-decoration: none;">
+  	<h5>
+	  	<%= image_tag("messages.png", size: "105x50") %>
+		<div id="messages_count_user<%= @user.id %>">
+			<%= render 'shared/unreaded_messages_count' %>
+		</div>
+  	</h5>
+   	</a>
+</section>

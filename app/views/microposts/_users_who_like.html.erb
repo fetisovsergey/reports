@@ -1,0 +1,10 @@
+<ul style="margin:5px;display:inline;list-style-type:none;">
+	<% if micropost.votes_for.any? %>
+		<% @voters = micropost.votes_for.voters %>
+		<% @voters.each do |user| %>
+			<%= render 'microposts/liker', :user => user %>
+		<% end %>
+	<% else %>
+		<h3 style="margin:20px">Данную запись никто не оценил</h3>
+	<% end %>
+</ul>

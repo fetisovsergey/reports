@@ -1,0 +1,12 @@
+<%= simple_form_for :conversation, url: :conversations do |f| %>
+<%= f.hidden_field :recipients,value: user.name %>
+<%= f.hidden_field :subject,value: "letter" %>
+  <h3><%= link_to(user.name, user,style:"text-decoration: none;") %></h3>
+  <div class="avatar">
+     <%= link_to image_tag(user.avatar.url(:message_avatar),class:"img-rounded"), user %>
+  </div>
+  <%= f.text_area :body, as: :text,placeholder: "Введите текст сообщения... " %>
+  <div style="margin:5px">
+     <%= f.button :submit, 'Отправить', class: 'btn-primary' %>
+  </div>
+<% end %>

@@ -1,0 +1,114 @@
+<script>
+$(document).ready(function(){
+
+  //Open comment form to make comment
+  $('#open_comment_form<%= micropost.id%>').bind('click', function() {
+
+    //Disable comment button for micropost
+    $('.comment_button').css("display", "inline");  //Enable all comment buttons
+    $('#open_comment_form<%= micropost.id%>').css("display", "none"); //Disable comment button for current micropost
+    /////////////////////////////////////////
+
+    // Disable all forms of microposts
+    $('.comment_forms').css("display", "none");
+    /////////////////////////////////////////
+
+    //Enable comment_form for micropost
+    $('#comment_form<%= micropost.id%>').css("display", "inline");
+    //////////////////////////////////////
+
+    //Focus on text_area of comment_form
+    $(".comment_text_area").focus();
+  });
+
+
+  // Show all comments of micropost
+  $('#open_all_comments_<%= micropost.id %>').bind('click', function() {
+
+    // show all comments or 30 comments
+    <% if micropost.comments.count > 31 %>
+      $("#comments<%= micropost.id%>").html("<%= j render 'comments/comments', :micropost => micropost, :count_of_comments => "30" %>");
+    <% else %>
+      $("#comments<%= micropost.id%>").html("<%= j render 'comments/comments', :micropost => micropost, :count_of_comments => micropost.comments.count %>");
+    <% end %>
+
+    //Hide show_comments_button for current micropost
+    $('#open_all_comments_<%= micropost.id %>').css("display", "none");
+    
+    //Disable comment button for current micropost
+    $('.comment_button').css("display", "inline");  //Enable all comment buttons
+    $('#open_comment_form<%= micropost.id%>').css("display", "none"); //Disable comment button for current micropost
+    /////////////////////////////////////////
+
+    // Disable all forms of microposts
+    $('.comment_forms').css("display", "none");
+    /////////////////////////////////////////
+
+    //Enable comment_form for current micropost
+    $('#comment_form<%= micropost.id%>').css("display", "inline");
+    //////////////////////////////////////
+
+    //Focus on text_area of comment_form
+    $(".comment_text_area").focus();
+  });
+
+
+  //Enable ENTER Button to send comment
+  $("comment_text_area, #<%= micropost.id %>").keypress(function(e)
+  {
+    if (e.keyCode == 13 && !e.shiftKey)
+    {
+      e.preventDefault();
+      $("submit_btn_comment, #<%= micropost.id %>").click();
+      $("submit_btn_comment, #<%= micropost.id %>").attr("disabled", true);
+      //enter = click on submit_button
+    }
+  });
+
+});
+</script>
+
+<li id="<%= micropost.id %>">	
+  <div class="message">
+    <div class="user">
+      <%= link_to image_tag(micropost.user.avatar.url(:thumb), class: "img-rounded",style:"margin-bottom: 1px"),micropost.user %>
+      <br>
+	    <%= render 'shared/user_name', :user => micropost.user %>
+    </div>
+    <div class="content">
+      <% if !micropost.content.blank? %>
+        <h3><%= micropost.content %></h3>
+      <% end %>
+      <% if !micropost.photo.url(:medium).empty? %>
+        <%= link_to image_tag(micropost.photo.url(:medium),class:"img-rounded",style:"margin-top:10px;margin-bottom:10px"),micropost.photo.url(:full),class: "image_post",rel: "gallery" %>
+      <% end %>
+      <% if !micropost.latitude.blank? %>
+        <%= render 'maps/show_map', :micropost => micropost %>
+      <% end %>
+	    <br>
+	    <div style="position:relative">
+        <div style="position:relative;width:65%">
+          <%= render 'microposts/likeform', :micropost => micropost %>
+        </div>
+        <div style="position:absolute;right:0;top:0;width:35%">
+          <h1 style="margin-top:5px">
+            <button id="open_comment_form<%= micropost.id%>" class="btn btn-link comment_button" style="text-decoration:none">
+              Комментировать
+            </button>
+            <% if current_user?(micropost.user) %>
+              <a href="#delete_micropost<%= micropost.id%>" data-toggle="modal" style="text-decoration:none">
+                <%= image_tag("delete_post.png", class: "delete_post_button",alt: "delete_post") %>
+              </a>
+            <% end %>
+          </h1>
+        </div>
+      </div>
+      <div id="comments<%= micropost.id %>">
+        <%= render 'comments/comments', :micropost => micropost, :count_of_comments => "3" %>
+      </div>
+      <div id="comment_form<%= micropost.id %>" class="comment_forms">
+          <%= render 'comments/comment_form', :micropost => micropost %>
+      </div>
+    </div>
+  </div>
+</li>

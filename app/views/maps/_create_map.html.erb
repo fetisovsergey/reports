@@ -1,0 +1,89 @@
+<script>
+$(document).ready(function(){
+  $('#map_button').bind('click', function() {
+    // Enable EXIT Button
+    $('#map_button').css("display", "none");
+    $('#map_button_exit').css("display", "inline");
+    ///////////////////////
+    //Enable CheckPlace Button
+    $('#check_point_button').css("display", "inline");
+    ///////////////////////
+    //Display MAP section
+    $("#map_section").css("height", "320px");
+    $("#map_section").css("margin-top", "10px");
+    $("#buttons_to_send").css("padding-bottom", "0px");
+    ///////////////////
+    //Creating MAP
+    L.mapbox.accessToken = 'pk.eyJ1IjoiZmV0aXNvdnNlcmdleSIsImEiOiI0X09HSjZFIn0.aU0mwcW1UZIj5ZWVBFkRdQ';
+    var map = L.mapbox.map('map', 'mapbox.streets').setView([30, 25], 1);
+    map.addControl(L.mapbox.geocoderControl('mapbox.places',{autocomplete: true}));
+	map.scrollWheelZoom.disable();
+    L.control.layers({
+    'Схема': L.mapbox.tileLayer('mapbox.streets').addTo(map),
+    'Спутник': L.mapbox.tileLayer('mapbox.satellite')
+    }).addTo(map);
+    /////////////////
+    // Set Default Marker Position
+    var marker = L.marker([30, 25],
+    {
+        icon: L.mapbox.marker.icon({'marker-color': '#CC0033','marker-symbol':'pitch','marker-size': 'large'}),
+        draggable: true
+    }).addTo(map);
+    //////////////////////////////
+    $('#check_point_button').bind('click', function() {
+        var m = marker.getLatLng();
+        document.getElementById("map_latitude").value = m.lat;
+        document.getElementById("map_longtitude").value = m.lng;
+        ///////////////////////
+        ///Disable Check Place Button
+        $('#check_point_button').css("display", "none");
+        ///////////////////////////
+        //Enable Map Field
+        $('#place').css("display", "inline");
+        $('.map_button').css("background-color", "#0099FF");
+        ///////////////////////
+        //Hide MAP section
+        $("#map_section").css("height", "0");
+        $("#map_section").css("margin-top", "0");
+        $("#buttons_to_send").css("padding-bottom", "10px");
+        ///////////////////
+    });
+  });
+  $('#map_button_exit').bind('click', function() {
+    // Enable EXIT Button
+    $('#map_button').css("display", "inline");
+    $('#map_button_exit').css("display", "none");
+    ///////////////////////
+    ///Disable CheckPlace Button
+    $('#check_point_button').css("display", "none");
+    ///////////////////////////
+    //Disable Map Field
+    $('#place').css("display", "none");
+    $('.map_button').css("background-color", "none");
+    ///////////////////////
+    //Disable Marker Position
+    if (document.getElementById("map_latitude").value)
+    {
+        document.getElementById("map_latitude").value = null;
+        document.getElementById("map_longtitude").value = null;
+    }
+    //////////////////////////
+    //Hide MAP section
+    $("#map_section").css("height", "0");
+    $("#map_section").css("margin-top", "0");
+    $("#buttons_to_send").css("padding-bottom", "10px");
+    ///////////////////
+  });
+});
+</script>
+
+<%= image_tag("map.png", size: "27x27",class: "btn btn-mini btn-link map_button",
+style:"display:inline",id:"map_button") %>
+<%= image_tag("map.png", size: "27x27",class: "btn btn-mini btn-link map_button",
+style:"display:none",id:"map_button_exit") %>
+<div style="left:90px;position:absolute;display:none;width:200px" id="place">Карта закреплена</div>
+<div class="btn btn-danger" id="check_point_button" style="right:115px;position:absolute;font-weight:300;display:none">Отметить cебя</div>
+
+<section id="map_section">
+  <div id='map'></div>
+</section>

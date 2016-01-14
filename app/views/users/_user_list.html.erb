@@ -1,0 +1,16 @@
+<section class="followbar" style="height:50px;">
+  <div id="title_of_userlist">
+    <%= @title %>  <%= @parameter %>
+  </div>
+  <div id="findform"> 
+        <%= form_tag(users_path, :method => "get",remote: true) do %>
+            <%= text_field_tag :search, params[:search], placeholder: "Введите имя...",style:"border-radius:30px;width:135px;" %>
+            <%= image_submit_tag("search.png",style:"position:absolute;width:30px;right:0px;border:none") %>
+        <% end %>
+    </div>
+</section>
+<ul class="users">
+  <% @users.each do |user| %>
+    <%= render user %>
+  <% end %>
+</ul>

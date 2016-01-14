@@ -1,0 +1,9 @@
+<% if user.name.size < 15 %>
+	<%= link_to(user.name, user,style:"text-decoration: none;") %>
+<% else %>
+	<% if user.name.size == 15 %>
+		<%= link_to(user.name, user,style:"text-decoration: none;font-size: 9pt") %>
+	<% else %>
+		<%= link_to(user.name, user,style:"text-decoration: none;font-size: 8pt") %>
+	<% end %>
+<% end %>

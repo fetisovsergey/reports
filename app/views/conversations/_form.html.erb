@@ -1,0 +1,20 @@
+<script>
+$(function(){
+	$("#textarea_message").focus();
+});
+</script>
+
+<%= simple_form_for :conversation, url: :conversations do |f| %>
+ <div style="padding:5px">
+	 <h3 style="font-size: 1.4em;margin-bottom:5px;margin-top:5px">
+		 Создать беседу
+	 </h3>
+  Участники:<br>
+  <%= f.hidden_field :subject,value: "letter" %>
+  <%= f.select :recipients, recipients_options, {}, {:multiple => true, :style => "margin-top:5px;margin-bottom:15px;width:99%",id:"recepients"} %>
+  <br>Сообщение:
+  <%= f.text_area :body, as: :text,placeholder: "Введите текст сообщения...",style: "height:100px;margin-top:5px;margin-bottom:10px;width:99%",id: "textarea_message" %>
+  <%= f.submit "Создать беседу", class: "btn btn-primary",id:"submit_btn_message_main" %>
+</div>
+
+<% end %>

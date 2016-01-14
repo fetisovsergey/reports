@@ -1,0 +1,22 @@
+<script>
+$(document).ready(function()
+{
+	//Focus on text_area of comment_form
+    $(".comment_text_area").focus();
+});
+</script>
+
+<%= form_for([micropost, @comment], remote: true, authenticity_token: true) do |f| %>
+	<div id="comment_form">
+	  	<div class="avatar">
+	        <%= link_to image_tag(current_user.avatar.url(:thumb), class: "img-rounded"),current_user %>
+	  	</div>
+		<div class="content">
+		    <%= f.text_area :content, class: "comment_text_area", id: micropost.id, placeholder:"Комментарий...", style:"height:40px;font-size:0.5em;margin-bottom:5px" %>
+		   	<%= f.submit "Отправить", class: "btn btn-primary submit_btn_comment", id: micropost.id %>
+		</div>
+	</div>
+<% end %>
+
+
+

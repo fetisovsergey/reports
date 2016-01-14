@@ -1,0 +1,71 @@
+<script>
+$(document).ready(function(){
+  $('#main_avatar').bind('click', function() {
+    $('#file_field_button').trigger('click');
+  });
+});
+</script>
+<% provide(:title, "Настройки профиля") %>
+      <h1 style="margin:20px auto;width:700px;font-weight:400;color: #FFFFFF">
+        Настройки профиля пользователя
+      </h1>
+      <%= form_for(@user) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>        
+      <div class="row" style="display:block;margin:0 auto;width:700px;position:relative">
+        <div id="settings1">
+          <%= image_tag(current_user.avatar.url(:medium), id: "main_avatar",class: "btn") %><br>
+          <div id="info"> 
+              Имя пользователя:
+              <%= f.text_field :name, placeholder: current_user.name %>
+              Пароль:
+              <%= f.password_field :password %>
+              Повторите пароль:
+              <%= f.password_field :password_confirmation %>
+          </div>
+        </div>
+        <div id="settings2">
+            <div id="info">        
+                Имя: 
+                <% if !current_user.realname.blank? %>
+                  <%= f.text_field :realname, placeholder: current_user.realname %>
+                <% else %>
+                  <%= f.text_field :realname %>
+                <% end %>
+
+                 Фамилия:
+                <% if !current_user.realname.blank? %>
+                  <%= f.text_field :surname, placeholder: current_user.surname %>
+                <% else %>
+                  <%= f.text_field :surname %>
+                <% end %>
+                
+                Город:
+                <% if !current_user.city.blank? %>
+                  <%= f.text_field :city, placeholder: current_user.city %>
+                <% else %>
+                  <%= f.text_field :city %>
+                <% end %>
+
+                Личный сайт:
+                <% if !current_user.weblink.blank? %>
+                  <%= f.text_field :weblink, placeholder: current_user.weblink %>
+                <% else %>
+                  <%= f.text_field :weblink %>
+                <% end %>
+                
+                <%= f.label :avatar, "Загрузить аватар:" %>
+                <%= f.file_field :avatar, class: 'btn btn-mini btn-default', style: "border: 1px solid #b0b0b0;", accept: 'image/png,image/gif,image/jpeg', id: "file_field_button" %>
+            </div>
+            <div id="about">
+                  О себе:
+                  <% if !current_user.about.blank? %>
+                    <%= f.text_area :about, placeholder: current_user.about %>
+                  <% else %>
+                    <%= f.text_area :about %>
+                  <% end %>
+                 <%= f.submit "Сохранить", class: "btn btn-primary",id: "save_button" %>
+            </div>
+        </div>
+      </div>
+<% end %>
+

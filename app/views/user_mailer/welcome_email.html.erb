@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h1>Добро пожаловать на сайт Reportsclub.ru, <%= @user.name %>!</h1>
+    <p>
+      Вы успешно зарегестрировались на сайте Reportsclub.ru!<br/>
+      Имя пользователя: <%= @user.name %><br/>
+      Адрес электронной почты: <%= @user.email %><br/>
+      Пароль: <%= @user.password %>
+    </p>
+    <p>
+      Подтвердите регистрацию по ссылке:<br>
+      <%= confirm_email_user_url(@user.confirm_token) %>
+    </p>
+    <p>Спасибо за пользование данным сервисом!)</p>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+
+//Render all comments of micropost
+
+// show all comments or 30 comments
+<% if @micropost.comments.count > 31 %>
+	$("#comments<%= @micropost.id%>").html("<%= j render 'comments/comments', :micropost => @micropost, :count_of_comments => "30" %>")
+<% else %>
+	$("#comments<%= @micropost.id%>").html("<%= j render 'comments/comments', :micropost => @micropost, :count_of_comments => @micropost.comments.count %>")
+<% end %>
+
+//Hide show_comments_button for current micropost
+$('#open_all_comments_<%= @micropost.id %>').css("display", "none")
+
+
+//Render comment form
+$("#comment_form<%= @micropost.id%>").html("<%= j render 'comments/comment_form', :micropost => @micropost, :@comment => @micropost.comments.build %>")
+
+$("#micropost_count").html('<%= current_user.microposts.count %>')
+$("#followers_count_user<%= current_user.id %>").html('<%= current_user.followers.count %>')
+$("#followed_count_user<%= current_user.id %>").html('<%= current_user.followed_users.count %>')
+$("#messages_count_user<%= current_user.id %>").html('<%= j render 'shared/unreaded_messages_count' %>')

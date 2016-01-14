@@ -1,0 +1,19 @@
+<div class="message_private">
+	<div class="user">
+		<%= link_to image_tag(User.find(message.sender_id).avatar.url(:thumb), class: "img-rounded",
+       	size:"35x35", style:"margin-bottom: 2px"), User.find(message.sender_id) %><br>
+ 	   	<% if User.find(message.sender_id).name.size < 15 %>
+ 	   		<%= link_to(User.find(message.sender_id).name, User.find(message.sender_id),style:"text-decoration: none;") %>
+ 	  	<% else %>
+ 			<% if User.find(message.sender_id).name.size == 15 %>
+ 				<%= link_to(User.find(message.sender_id).name, User.find(message.sender_id),style:"text-decoration: none;font-size: 9pt") %>
+ 			<% else %>
+ 				<%= link_to(User.find(message.sender_id).name, User.find(message.sender_id),style:"text-decoration: none;font-size: 8pt") %>
+ 			<% end %>
+ 	  	<% end %>
+    </div>
+    <div class="content">
+       <h3><%= message.body %></h3>
+       <h1><%= message.created_at.strftime("%d.%m.%Y %H:%M") %></h1>
+    </div>
+</div>

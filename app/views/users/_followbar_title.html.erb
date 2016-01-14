@@ -1,0 +1,25 @@
+<section class="followbar">
+    <h3 style="text-align:left;">
+    <% if @title=="Followers" %>
+        <%= image_tag("followers.png", style:"height:25px") %>
+    <% else %>
+        <%= image_tag("following.png", style:"height:25px") %>		 
+    <% end %>
+    </h3>
+
+     <div id="followcount">
+    	<% if @title=="Followers" %>
+        	<span class="badge badge-default"><%= @user.followers.count %></span> 
+    	<% else %>
+        	<span class="badge badge-default"><%= @user.followed_users.count %></span>	 
+    	<% end %>
+    </div>
+
+    <div id="findform"> 
+        <%= form_tag(@title.downcase, :method => "get",remote: true) do %>
+            <%= text_field_tag :search, params[:search], placeholder: "Введите имя...",style:"border-radius:30px;width:135px;" %>
+            <%= image_submit_tag("search.png",style:"position:absolute;width:30px;right:0px;border:none") %>
+        <% end %>
+    </div>
+</section>
+

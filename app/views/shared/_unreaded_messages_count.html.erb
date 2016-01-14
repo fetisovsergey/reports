@@ -1,0 +1,12 @@
+<% message_count=0 %>
+<% current_user.mailbox.conversations.each do |conversation| %>
+	<% if conversation.is_unread?(current_user) %>
+		<% message_count += 1 %>
+	<% end %>
+<% end %>
+
+<% if message_count != 0 %>
+	<span class="btn btn-inverse" id="badge" style="padding:1px 2px;">
+		+<%= message_count %>
+	</span>
+<% end %>

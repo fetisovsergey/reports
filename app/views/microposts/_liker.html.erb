@@ -1,0 +1,5 @@
+<li class="liker" style="border:none;margin:4px;float:left;">
+	<%= link_to image_tag(user.avatar.url(:medium),
+	class: "img-rounded", size: "60x60",style:"margin-bottom:3px;"),user %><br>
+	<%= link_to(user.name,user, style:"text-decoration: none;") %>
+</li>

@@ -1,0 +1,33 @@
+
+<script>
+$(document).ready(function(){
+  //Enable micropost textarea focus
+	$('#micropost_text_area').focus();
+
+  $('#photo_button').bind('click', function() {
+    $('#file_field_button').trigger('click');
+  });
+
+  $('#file_field_button').bind('change', function() {
+    $("#photo_button").css("background-color", "#FFD633");
+  });
+});
+</script>
+
+
+<%= form_for(@micropost, remote: true,authenticity_token: true) do |f| %>
+<%= render 'shared/error_messages', object: f.object %>
+<div class="field" id="micropostform">
+	<div id="content">
+		<%= f.text_area :content, id:"micropost_text_area",placeholder: "Создать новый пост..." %>
+	</div>
+  <div id="buttons_to_send">
+    <%= image_tag("camera.png", size: "27x27",class: "btn btn-mini btn-link",id:"photo_button") %>
+  	<%= f.file_field :photo, accept: 'image/png,image/gif,image/jpeg', id: "file_field_button" %>
+    <%= f.hidden_field :latitude, id: "map_latitude" %>
+    <%= f.hidden_field :longtitude, id: "map_longtitude" %>
+   	<%= f.submit "Отправить", class: "btn btn-primary", id: "submit_btn_micropost" %>
+    <%= render 'maps/create_map' %>
+  </div>
+</div>      
+<% end %>

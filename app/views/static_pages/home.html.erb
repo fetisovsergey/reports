@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+
+<% if signed_in? %>
+
+<body>
+  <div class="row" style="position:absolute;">  
+    <aside class="span4">
+		  <%= render 'shared/user_info' %>
+    </aside>
+    <div id="messagebar" class="span6">
+      <%= render 'shared/micropost_form' %>
+      <%= render 'shared/feed' %>
+    </div>
+  </div>
+</body>
+
+<% else %>
+
+<body id="main">
+  <div class="row center">
+	  <div id="box">
+		  <%= form_for(:session, url: sessions_path) do |f| %>
+   	      <%= f.label :email, "Адрес электронной почты", style: "font-weight: 300" %>
+		  <%= f.text_field :email, placeholder: "Адрес электронной почты", style: "font-weight: 300" %>
+
+		  <%= f.label :password, "Пароль", style: "font-weight: 300" %>
+		  <%= f.password_field :password, placeholder: "Пароль", style: "font-weight: 300" %>
+
+		  <%= f.submit "Войти", class: "btn btn-primary", style: "font-weight: 300" %>
+		  <% end %>
+      </div>
+	  <div id="box">
+		    <%= form_for(:user, url: users_path) do |f| %>
+		    <%= f.label :name, "Регистрация", style: "font-weight: 300" %>
+		    <%= f.text_field :name, placeholder: "Имя пользователя", style: "font-weight: 300" %>
+		    <%= f.text_field :email, placeholder: "Адрес электронной почты", style: "font-weight: 300" %>
+			<%= f.password_field :password, placeholder: "Пароль", style: "font-weight: 300" %>
+			<%= f.password_field :password_confirmation, placeholder: "Повторите пароль", style: "font-weight: 300" %>
+				  
+			<%= f.submit "Поехали!", class: "btn btn-success", style: "font-weight: 300" %>
+			<% end %>
+	  </div>
+    <div id="presentmessage">
+		<h3>
+	  	  <font size="5">
+		  	Добро пожаловать в <%= image_tag("reports.png", style:"width:30%", alt: "Reports") %>!
+	  	  </font><br>
+	  	  Социальная сеть с различными возможностями
+	    </h3>
+	  	<div style="position:relative;margin:auto">
+  	  		<div style="width:30%">
+  	   	 		<%= image_tag("email.png", style:"width:60%", alt: "Reports") %><br>
+     	   		<h3>Cообщения</h3>
+  	  		</div>
+  	  		<div style="width:30%;position:absolute;left:35%;top:0">
+  	   	 		<%= image_tag("map.png", style:"width:60%", alt: "Reports") %><br>
+     	  		<h3>Геолокация</h3>
+  	  		</div>
+  	  		<div style="width:30%;position:absolute;left:70%;top:0">
+  	   	 		<%= image_tag("camera4.png", style:"width:60%", alt: "Reports") %><br>
+     	  		<h3>Фотографии</h3>
+  	  		</div>
+	  	</div>
+		<h3>
+			Зарегистрируйся и попробуй её в действии!<br>
+			<%= link_to("Регистрация", signup_path, class: "btn btn-inverse",style:"margin-top:15px") %>
+	  	 </h3>
+    </div>
+	</div>
+</body>
+<% end %>
+
+
+
+

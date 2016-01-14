@@ -1,0 +1,24 @@
+<% provide(:title, 'Sign up') %>
+
+<div class="row">
+  <div style="width:40%;margin:0 auto">
+	<h1 style="color:#FFFFFF">Регистрация</h1>
+    <%= form_for(@user) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+      
+      <%= f.label :name, "Имя пользователя", style:"color:#FFFFFF;font-weight:300" %>
+      <%= f.text_field :name, placeholder: "Буквы латинского алфавита (от 3-х до 18 символов)" %>
+
+      <%= f.label :email, "Адрес электронной почты", style:"color:#FFFFFF;font-weight:300" %>
+      <%= f.text_field :email %>
+
+      <%= f.label :password, "Пароль", style:"color:#FFFFFF;font-weight:300" %>
+      <%= f.password_field :password %>
+
+      <%= f.label :password_confirmation, "Повторите пароль", style:"color:#FFFFFF;font-weight:300" %>
+      <%= f.password_field :password_confirmation %>
+
+      <%= f.submit "Зарегестрироваться", class: "btn btn-success" %>
+    <% end %>
+  </div>
+</div>

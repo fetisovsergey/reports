@@ -1,0 +1,25 @@
+<div id="leftbar">
+ <% @user ||= current_user %>
+ <%= render 'shared/avatar' %>	
+ <aside id="stats">
+	 <%= render 'shared/micropost_count' %>
+     <%= render 'shared/followed_count' %>
+	 <%= render 'shared/followers_count' %>
+	 <% if @user == current_user %>
+		<%= render 'shared/my_messages' %>
+	 <% end %>
+</aside>
+</div>
+<% if @usersfollowed.any? %>
+<div id="followerslist">
+	<%= render 'shared/followers_list' %>
+</div>
+<% end %>
+
+
+
+
+
+
+
+

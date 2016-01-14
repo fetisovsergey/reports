@@ -1,0 +1,30 @@
+<div class="aboutuser">
+	<% if !@user.realname.blank? %>
+	<section class="block">
+			<%= image_tag("user.png", size: "23x23", class:"img") %>
+			<h3><%= @user.realname %>&nbsp<%= @user.surname %></h3>
+	</section>
+	<% end %>
+	<% if !@user.about.blank? %>
+	<section class="block">
+		<%= image_tag("info.png", size: "23x23", class:"img") %>
+		<h3><%= @user.about %></h3>
+	</section>
+	<% end %>
+	<% if !@user.city.blank? %>
+	<section class="block">	
+			<%= image_tag("home.png", size: "23x23", class:"img") %> 
+			<h3><%= @user.city %></h3>
+	</section>
+	<% end %>
+	<% if !@user.weblink.blank? %>
+	<section class="block">
+			<%= image_tag("hyperlink.png", size: "23x23", class:"img") %> 
+			<h3>
+				<a href="http://<%= @user.weblink %>" style="text-decoration: none;">
+					<%= @user.weblink %>
+				</a>
+			</h3>
+	</section>
+	<% end %>
+</div>

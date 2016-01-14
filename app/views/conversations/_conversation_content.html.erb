@@ -1,0 +1,27 @@
+<%= content_tag_for(:li, conversation.receipts_for(current_user).last) do |receipt| %>
+<% message = receipt.message %>
+<div class="conversation lighting">
+	<div class="user">
+    	<% if current_user.id == conversation.originator.id %>
+        	<%= link_to image_tag(conversation.recipients.first.avatar.url(:thumb), class: "img-rounded",style:"margin-bottom: 2px"),
+            conversation.recipients.first %><br>
+			<%= render 'shared/user_name', :user => conversation.recipients.first %>
+        <% else %>
+           	<%= link_to image_tag(conversation.originator.avatar.url(:thumb), class: "img-rounded",style:"margin-bottom: 2px"),
+           	conversation.originator %><br>
+			<%= render 'shared/user_name', :user => conversation.originator %>
+        <% end %>
+    </div>
+    <a href="<%= conversation_path(conversation) %>" style="text-decoration: none;">
+    	<div class="content">
+    		<h3><%= message.body %></h3>
+        	<h1><%= message.created_at.strftime("%d.%m.%Y %H:%M") %></h1>
+    	</div>
+    	<div class="delete">
+			<a href="#delete_conversation<%= conversation.id%>" data-toggle="modal" style="text-decoration:none">
+        		<%= image_tag("delete.png") %>
+			</a>
+    	</div>         
+    </a>
+</div>
+<% end %>  

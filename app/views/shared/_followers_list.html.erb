@@ -1,0 +1,16 @@
+<aside id="followersblock">
+	<section class="block">
+		<%= image_tag("following.png", size: "90x30") %>
+
+		<div id="findform" style="top:5px"> 
+        <%= form_tag(new_conversation_path, :method => "get",remote: true) do %>
+            <%= text_field_tag :search, params[:search], placeholder: "Введите имя...",style:"border-radius:30px;width:135px;" %>
+            <%= image_submit_tag("search.png",style:"position:absolute;width:30px;right:0px;border:none") %>
+        <% end %>
+    	</div>
+	</section>
+	<section class="list" id="list_of_followers">
+		<%= render 'shared/following_users', :users => @usersfollowed %>
+	</section>
+</aside>
+

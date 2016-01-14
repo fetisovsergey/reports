@@ -1,0 +1,38 @@
+<div style="position:relative;left:0px;display:inline-block;width:70%">
+	<h1>Posted <%= time_ago_in_words(micropost.created_at) %> ago.</h1>
+</div>
+<div style="position:absolute;right:0px;display:inline-block;width:25%;">
+	<div id="like<%= micropost.id%>" class="vote_logo">
+		<% if micropost.voting?(current_user) %>
+ 			<%= render 'microposts/dislike', :micropost => micropost %>
+		<% else %>
+			<%= render 'microposts/like', :micropost => micropost %>
+		<% end %>
+	</div>
+	<a href="#modal_voters_of_micropost<%= micropost.id%>" data-toggle="modal" style="text-decoration:none">
+	<h1>
+		<div id="count_likes_of_micropost<%= micropost.id%>" class="vote_count">
+			<% if micropost.votes.count != 0 %>
+				<%= micropost.votes.count %>
+			<% end %>
+		</div>
+	</h1>
+	</a>
+</div>
+
+
+<div class="modal hide fade modal_of_likers" id="modal_voters_of_micropost<%= micropost.id%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+        <h3 class="modal-title" id="myModalLabel">Оценили запись</h3>
+      </div>
+      <div id="voters_of_<%= micropost.id%>" class="modal-body">
+      	<%= render 'microposts/users_who_like', :micropost => micropost %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<body>
+	<div class="row">  
+	  <aside>
+	    <div id="leftbar">
+			<% @user ||= current_user %>
+			<%= render 'shared/avatar' %>
+			 <div id="stats">
+		 		<%= render 'shared/micropost_count' %>
+	     		<%= render 'shared/followed_count' %>
+		 		<%= render 'shared/followers_count' %>
+		  		<% if @user == current_user %>
+		  			<%= render 'shared/my_messages' %>
+		  		<% end %>
+			</div>
+			<div style="position:absolute;top:240px;">	
+			<% if !@user.realname.blank? or !@user.surname.blank? or !@user.about.blank? or !@user.city.blank? or !@user.weblink.blank? %>
+				<%= render 'shared/aboutuser' %>
+			<% end %>
+			<% if @user.microposts.any? %>
+				<% @user.microposts.each do |receipt| %>
+		    		<% if !receipt.photo.url.blank? %>
+		    			<%= render 'shared/photouser' %>
+		    			<% break %>
+		    		<% end %>
+		    	<% end %>
+			<% end %>
+			</div>
+		</div>
+		<%= link_to('Создать беседу',:new_conversation,class:"btn btn-default",id:"button_to_make_conversation") %>
+	  </aside>
+	    <% if mailbox.sentbox.any? or mailbox.inbox.any? %>
+    		<div id="messagebar" style="height:auto;border-bottom:none;padding-bottom:2px">    
+      	  		<%= render collection: mailbox.conversations, partial: 'conversation' %>
+    		<div>
+    	<% end %>
+    </div>
+</body>
+
+
+
+
+
+
+
+
+

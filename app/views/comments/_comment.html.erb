@@ -1,0 +1,42 @@
+<% if !comment.content.blank? %>
+<div class="message" style="margin-top:5px;">
+  	<div class="user" style="width:10%">
+		<%= link_to image_tag(comment.user.avatar.url(:thumb), class: "img-rounded",style:"width:100%"), comment.user %>		
+    </div>
+    <div class="content" style="width:87%;left:13%;font-size:0.9em;">
+    	<h3><%= render 'shared/user_name', :user => comment.user %></h3>
+    	<h3><%= comment.content %></h3>
+    	<div style="position:relative">
+			<div style="position:relative;display:inline-block;width:65%">
+				<h1 style="margin:0">Posted <%= time_ago_in_words(comment.created_at) %> ago.</h1>
+			</div>
+			<div style="position:absolute;right:0;top:0;display:inline-block">
+				<% if current_user?(comment.user) %>
+		          	<a href="#delete_comment<%= comment.id%>" data-toggle="modal" style="text-decoration:none">
+		            	<%= image_tag("delete_post.png", size: "20x20", alt: "delete_post") %>
+		          	</a>
+				<% end %>	 	
+			</div>
+		</div>
+	</div>
+ </div>
+
+ <div class="modal hide fade modal_of_conversation" id="delete_comment<%= comment.id%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="font-size:0.7em">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="myModalLabel">Удалить комментарий</h3>
+      </div>
+      <div class="modal-body" style="text-align:center">
+        Вы хотите удалить комментарий?
+      </div>
+      <div class="modal-footer">
+        <%= link_to 'Да',comment, method: :delete,class: "btn btn-primary" %>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Нет</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <% end %>

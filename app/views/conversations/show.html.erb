@@ -1,0 +1,62 @@
+<script>
+$(function(){
+	//_______________При посылке ссобщения вывыодить конец переписки______________________//
+    $("#messages_of_conversation").scrollTop($("#messages_of_conversation")[0].scrollHeight);
+	//____________________________________________________________________________________//
+});
+</script>
+<!--_Пометить_переписку_как_просмотренную_-->
+<% conversation.mark_as_read(current_user) %>
+<!--++++++++++++++++++++++++++++++++++++++-->
+<body>
+  <div class="row">  
+    <aside>
+      <div id="leftbar">
+      <% @user ||= current_user %>
+      <%= render 'shared/avatar' %>
+       <div id="stats">
+        <%= render 'shared/micropost_count' %>
+          <%= render 'shared/followed_count' %>
+        <%= render 'shared/followers_count' %>
+          <% if @user == current_user %>
+            <%= render 'shared/my_messages' %>
+          <% end %>
+      </div>
+      <% if @user.microposts.any? %>
+        <% @user.microposts.each do |receipt| %>
+          <% if !receipt.address.blank? and !receipt.photo.url.blank? %>
+            <%= render 'maps/show_places' %>
+            <% break %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <div style="position:absolute;top:240px;">  
+      <% if !@user.realname.blank? or !@user.surname.blank? or !@user.about.blank? or !@user.city.blank? or !@user.weblink.blank? %>
+        <%= render 'shared/aboutuser' %>
+      <% end %>
+      <% if @user.microposts.any? %>
+        <% @user.microposts.each do |receipt| %>
+            <% if !receipt.photo.url.blank? %>
+              <%= render 'shared/photouser' %>
+              <% break %>
+            <% end %>
+          <% end %>
+      <% end %>
+      </div>
+    </div>
+    </aside>
+    <div id="messagebar">
+    	<section style="height:508px;margin-top:3px;" id="messages_of_conversation">
+      	  <%= render 'conversations/messages_of_conversation' %>
+    	</section>
+    	<div style="position:absolute;bottom:0px;" id="message_form">
+      	  <%= render 'conversations/message_form', conversation: conversation %>
+    	</div>
+		<% if conversation.recipients.count > 2 %>
+			<%= render 'conversations/recepients_of_conversation' %>
+		<% end %>
+  	</div>
+  </div>
+</body>
+
+

@@ -1,0 +1,7 @@
+$("#messagebar").html("<%= j render 'users/follow_list' %>")
+$("#follow_icons").html("<%= j render 'users/followicons' %>")
+
+$("#micropost_count").html('<%= current_user.microposts.count %>')
+$("#followers_count_user<%= current_user.id %>").html('<%= current_user.followers.count %>')
+$("#followed_count_user<%= current_user.id %>").html('<%= current_user.followed_users.count %>')
+$("#messages_count_user<%= current_user.id %>").html('<%= j render 'shared/unreaded_messages_count' %>')

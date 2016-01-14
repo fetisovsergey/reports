@@ -1,0 +1,8 @@
+<div class="userblock">
+	<div id="user">
+    	<%= link_to image_tag(user.avatar.url(:thumb),class:"img-rounded"), user %>&nbsp
+        <%= link_to(user.name, user,style:"text-decoration: none;") %>
+    </div>
+    <%= render 'conversations/write_user', :user => user,:text => "Написать" %>
+</div>
+

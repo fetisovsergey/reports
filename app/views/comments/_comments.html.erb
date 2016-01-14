@@ -1,0 +1,22 @@
+
+<% micropost.comments.each do |comment| %>
+	<% if !comment.content.blank? %>
+		<% if micropost.comments.count > 3 %>
+			<button id="open_all_comments_<%= micropost.id %>" class="open_comment_buttons">
+				<% if micropost.comments.count < 31 %>
+					 Показать все комментарии (<%= micropost.comments.count %>)
+				<% else %>
+					 Показать последние 30 комментариев из <%= micropost.comments.count %>
+				<% end %>
+			</button>
+		<% end %>
+		<% micropost.comments.last(count_of_comments.to_i).each do |comment| %>
+			<%= render 'comments/comment', :comment => comment %>
+		<% end %>
+		<% break %>
+	<% end %>
+<% end %>
+
+
+
+

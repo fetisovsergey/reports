@@ -1,0 +1,10 @@
+<%= render 'users/followbar_title' %>
+<% if @users.any? %>
+    <ul class="users">
+        <%= render @users %>
+    </ul>
+    <div style="font-size:1.1em;text-align:center;font-weight:300;position:absolute;width:540px">
+        <%= will_paginate @users, :previous_label => "&#9668; Назад",:next_label => "Вперед &#9658;",
+        :inner_window => 1, :outer_window => 0 %>
+    </div>
+<% end %>

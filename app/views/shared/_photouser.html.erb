@@ -1,0 +1,10 @@
+<div class="aboutuser" style="margin-top:10px;">
+	<section id="photogallery">
+		<% @user.microposts.each do |receipt| %>
+			<% if !receipt.photo.url.blank? %>
+				<%= link_to image_tag(receipt.photo.url(:thumb),class:"img-rounded",style:"padding-left:1px;padding-right:1px;margin-bottom:5px"),
+				receipt.photo.url(:full), class: "image_gallery", rel: "my_gallery" %>
+			<% end %>
+	    <% end %>
+	</section>
+</div>

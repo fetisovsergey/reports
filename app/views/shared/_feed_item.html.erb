@@ -1,0 +1,137 @@
+<script>
+$(document).ready(function(){
+
+  //Open comment form to make comment
+  $('#open_comment_form<%= feed_item.id%>').bind('click', function() {
+
+  	//Disable comment button for micropost
+  	$('.comment_button').css("display", "inline");	//Enable all comment buttons
+  	$('#open_comment_form<%= feed_item.id%>').css("display", "none"); //Disable comment button for current micropost
+  	/////////////////////////////////////////
+
+  	// Disable all forms of microposts
+    $('.comment_forms').css("display", "none");
+    /////////////////////////////////////////
+
+    //Enable comment_form for micropost
+    $('#comment_form<%= feed_item.id%>').css("display", "inline");
+    //////////////////////////////////////
+
+    //Focus on text_area of comment_form
+    $(".comment_text_area").focus();
+  });
+
+
+  // Show all comments of micropost
+  $('#open_all_comments_<%= feed_item.id %>').bind('click', function() {
+
+  	// show all comments or 30 comments
+    <% if feed_item.comments.count > 31 %>
+  		$("#comments<%= feed_item.id%>").html("<%= j render 'comments/comments', :micropost => feed_item, :count_of_comments => "30" %>");
+  	<% else %>
+  		$("#comments<%= feed_item.id%>").html("<%= j render 'comments/comments', :micropost => feed_item, :count_of_comments => feed_item.comments.count %>");
+  	<% end %>
+
+  	//Hide show_comments_button for current micropost
+  	$('#open_all_comments_<%= feed_item.id %>').css("display", "none");
+  	
+  	//Disable comment button for current micropost
+  	$('.comment_button').css("display", "inline");	//Enable all comment buttons
+  	$('#open_comment_form<%= feed_item.id%>').css("display", "none");	//Disable comment button for current micropost
+  	/////////////////////////////////////////
+
+  	// Disable all forms of microposts
+    $('.comment_forms').css("display", "none");
+    /////////////////////////////////////////
+
+    //Enable comment_form for current micropost
+    $('#comment_form<%= feed_item.id%>').css("display", "inline");
+    //////////////////////////////////////
+
+    //Focus on text_area of comment_form
+    $(".comment_text_area").focus();
+  });
+  
+
+  //Enable ENTER Button to send comment
+  $("comment_text_area, #<%= feed_item.id %>").keypress(function(e)
+  {
+    if (e.keyCode == 13 && !e.shiftKey)
+    {
+      e.preventDefault();
+      $("submit_btn_comment, #<%= feed_item.id %>").click();
+      $("submit_btn_comment, #<%= feed_item.id %>").attr("disabled", true);
+      //enter = click on submit_button
+    }
+   });
+
+});
+</script>
+
+
+
+
+<li id="<%= feed_item.id %>">
+	<div class="message">
+  		<div class="user">
+			<%= link_to image_tag(feed_item.user.avatar.url(:thumb), class: "img-rounded",style:"margin-bottom: 1px"), feed_item.user %>
+			<br>
+			<%= render 'shared/user_name', :user => feed_item.user %>
+    	</div>
+    	<div class="content">
+    		<% if !feed_item.content.blank? %>
+				<h3><%= feed_item.content %></h3>
+			<% end %>
+			<% if !feed_item.photo.url(:medium).empty? %>
+				<%= link_to image_tag(feed_item.photo.url(:medium),class:"img-rounded",
+				style:"margin-top:10px;margin-bottom:10px"),feed_item.photo.url(:full),
+				class: "image_post", rel: "gallery" %>
+			<% end %>
+			<% if !feed_item.latitude.blank? %>
+				<%= render 'maps/show_map', :micropost => feed_item %>
+			<% end %>
+			<br>
+			<div style="position:relative">
+				<div style="position:relative;width:65%">
+					<%= render 'microposts/likeform', :micropost => feed_item %>
+				</div>
+				<div style="position:absolute;right:0;top:0;width:35%">
+					<h1 style="margin-top:5px">
+						<button id="open_comment_form<%= feed_item.id%>" class="btn btn-link comment_button" style="text-decoration:none">
+	                   		Комментировать
+	          		   	</button>
+						<% if current_user?(feed_item.user) %>
+	          		   		<a href="#delete_micropost<%= feed_item.id%>" data-toggle="modal" style="text-decoration:none">
+	                   			 <%= image_tag("delete_post.png", class: "delete_post_button",alt: "delete_post") %>
+	          		   		</a>
+						<% end %>
+				 	</h1>
+				</div>
+			</div>
+			<div id="comments<%= feed_item.id %>">
+				<%= render 'comments/comments', :micropost => feed_item, :count_of_comments => "3" %>
+			</div>
+			<div id="comment_form<%= feed_item.id %>" class="comment_forms">
+		  		<%= render 'comments/comment_form', :micropost => feed_item %>
+			</div>
+		</div>
+ 	</div>
+</li>
+
+<div class="modal hide fade modal_of_conversation" id="delete_micropost<%= feed_item.id%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="myModalLabel">Удалить запись</h3>
+      </div>
+      <div class="modal-body" style="text-align:center">
+        Вы хотите удалить данную запись?
+      </div>
+      <div class="modal-footer">
+        <%= link_to 'Да',feed_item, method: :delete,class: "btn btn-primary" %>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Нет</button>
+      </div>
+    </div>
+  </div>
+</div>

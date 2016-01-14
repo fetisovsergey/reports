@@ -1,0 +1,12 @@
+$("#messages_of_conversation").html("<%= j render 'conversations/messages_of_conversation' %>")
+
+//_______________При посылке ссобщения вывыодить конец переписки______________________//
+$("#messages_of_conversation").scrollTop($("#messages_of_conversation")[0].scrollHeight);
+//____________________________________________________________________________________//
+
+$("#message_form").html("<%= j render 'conversations/message_form' %>")
+
+$("#micropost_count").html('<%= current_user.microposts.count %>')
+$("#followers_count_user<%= current_user.id %>").html('<%= current_user.followers.count %>')
+$("#followed_count_user<%= current_user.id %>").html('<%= current_user.followed_users.count %>')
+$("#messages_count_user<%= current_user.id %>").html('<%= j render 'shared/unreaded_messages_count' %>')

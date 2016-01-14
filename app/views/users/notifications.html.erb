@@ -1,0 +1,68 @@
+<% provide(:title, @user.name) %>
+<div style="min-width:1060px;">
+	<h1 style="color:#FFFFFF;font-weight:400">Уведомления</h1>
+	<div id="big_status_block">
+		<div class="status_block" style="width:25%;min-width:260px">
+			<h3>Followers</h3>
+			<% @users_followers.each do |relation| %>
+			<% user = @user.followers.find(relation.follower_id) %>
+			<div style="position:relative">
+				<div class="avatar_notification">
+					<%= link_to image_tag(user.avatar.url(:thumb),class:"img-rounded"), user %>
+				</div>
+				<div class="content_notification">
+					<%= link_to(user.name, user,style:"text-decoration: none;font-size: 1.1em;") %><br>Follows your account 
+					<%= time_ago_in_words(relation.created_at) %> ago
+				</div>
+				<div class="image_notification">
+					<%= image_tag("add_follow.png") %>
+				</div>
+			</div>
+
+			<% end %>
+			<br>
+			</div>
+
+			<div class="status_block" style="width:43%">
+			<h3>Comments</h3>
+			<% @comments.each do |comment| %>
+			<div style="position:relative">
+				<div class="avatar_notification">
+					<%= link_to image_tag(comment.user.avatar.url(:thumb),class:"img-rounded"), comment.user %>
+				</div>
+				<div class="content_notification" style="line-height:1.3">
+					<%= link_to(comment.user.name, comment.user,style:"text-decoration: none;font-size: 1.1em;") %><br>
+					<font style="font-weight:700">
+						<%= comment.content %>
+					</font>
+					<br>
+					Posted comment <%= time_ago_in_words(comment.created_at) %> ago
+				</div>
+				<div class="image_notification">
+					<%= image_tag("comment.png") %>
+				</div>
+			</div>
+			<% end %>
+			</div>
+
+			<div class="status_block" style="width:25%;min-width:260px;">
+			<h3>Likes</h3>
+			<% @votes.each do |vote| %>
+			<% user = User.find(vote.voter_id) %>
+			<div style="position:relative">
+				<div class="avatar_notification">
+					<%= link_to image_tag(user.avatar.url(:thumb),class:"img-rounded"), user %>
+				</div>
+				<div class="content_notification">
+					<%= link_to(user.name, user,style:"text-decoration: none;font-size: 1.1em;") %><br>Likes your post
+					<%= time_ago_in_words(vote.created_at) %> ago
+				</div>
+				<div class="image_notification">
+					<%= image_tag("heart_active.png") %>
+				</div>
+			</div>
+			<% end %>
+		</div>
+	</div>
+</div>
+

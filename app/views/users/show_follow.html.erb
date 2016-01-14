@@ -1,0 +1,21 @@
+<% provide(:title, @title) %>
+<div class="row" style="margin:0 auto;width:890px;position:relative">
+	<div id="leftbar">
+	 <% @user ||= current_user %>
+	 <%= render 'shared/avatar' %>	
+	 <aside id="stats">
+	   <%= render 'shared/micropost_count' %>
+	   <%= render 'shared/followed_count' %>
+		 <%= render 'shared/followers_count' %>
+     <% if @user == current_user %>
+        <%= render 'shared/my_messages' %>
+     <% end %>
+	 </aside>
+  </div>
+  <div id="follow_icons">
+    <%= render 'users/followicons' %>
+  </div>
+  <div id="messagebar" style="height:auto;width:540px;"> 
+    <%= render 'users/follow_list' %>
+  </div>
+</div>

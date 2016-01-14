@@ -1,0 +1,9 @@
+<% if @feed_items.any? %>
+  <ol class="microposts" style="border-radius: 0 0 5px 5px">
+    <%= render partial: 'shared/feed_item', collection: @feed_items %>
+  </ol>
+  <div style="font-size:1.1em;text-align:center;width:510px;font-weight:300;margin:-10px">
+    <%= will_paginate @feed_items, :previous_label => "&#9668; Назад",:next_label => "Вперед &#9658;",
+    :inner_window => 1, :outer_window => 0 %>
+  </div>
+<% end %>
