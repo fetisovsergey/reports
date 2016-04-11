@@ -95,7 +95,7 @@ require 'tlsmail'
    :enable_starttls_auto => true,
    :authentication  => 'plain',
    :user_name       => 'info@reportsclub.ru',
-   :password        => 'F6ti50vvvv',
+   :password        => '############',
  #  :openssl_verify_mode => 'none'
   }
 config.action_mailer.raise_delivery_errors = true
